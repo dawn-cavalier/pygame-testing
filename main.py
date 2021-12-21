@@ -12,7 +12,7 @@ game_name = 'Game Name'
 
 # Main function
 # Where the magic happens
-def main() -> int:
+def main():
     # Init pygame, needed for modifications
     pygame.init()
 
@@ -33,7 +33,19 @@ def main() -> int:
     # depth is color depth, auto set to best settings if ignored
     window_surface = pygame.display.set_mode(size = [screen_width, screen_height])
 
-    return 0
+
+    # Loop to play game
+    running = True
+    while running: 
+        # Handle all queued events
+        # If events are not used, they still need to be handled with pump()
+        for event in pygame.event.get():
+            # Game exit
+            if event.type == QUIT:
+                running = False
+
+    # Close out pygame
+    pygame.quit()
 
 # Import protection
 if __name__ == "__main__":
