@@ -4,7 +4,9 @@ print(sys.path)
 import pygame
 from pygame.locals import *
 
-class ChessGame:
+from utils.spritesheet import SpriteSheet
+
+class ChessGame: 
     def __init__(self):
         # Declare all internal veraibles
         self.screen_width=720
@@ -34,6 +36,10 @@ class ChessGame:
         # depth is color depth, auto set to best settings. Leave it ignored
         self.window_surface = pygame.display.set_mode(size = [self.screen_width, self.screen_height])
 
+        # Load pieces
+        self.chess_set = ChessPieces(self, "images/chess_pieces.bmp")
+
+
     def run(self):
         while(True):
             self._check_events()
@@ -55,10 +61,10 @@ class ChessGame:
         # Get the shape of the window (width, height)
         windowShape = pygame.display.get_window_size()
 
-        # Set background color
-        # Currently fills space with black
+        ## Set background color
         self.window_surface.fill(self.background_black)
-
+        
+        ## Draw the board
         # Get variables for board set up
         boardSquareSize = int(windowShape[1]/8)
         if (boardSquareSize*8 > windowShape[0]):
@@ -72,15 +78,56 @@ class ChessGame:
             for row in range(8):
                 boardRow = boardSquareSize * row + boardHorizontalOffset
                 boardCol = boardSquareSize * col + boardVerticalOffset
+                boardLocation = pygame.Rect(boardRow, boardCol, boardSquareSize, boardSquareSize)
                 # White squares
                 if ((col + row) % 2 == 0):
-                    pygame.draw.rect(self.window_surface, self.board_white, (boardRow, boardCol, boardSquareSize, boardSquareSize))
+                    pygame.draw.rect(self.window_surface, self.board_white, boardLocation)
                 # Black squares
                 else:
-                    pygame.draw.rect(self.window_surface, self.board_black, (boardRow, boardCol, boardSquareSize, boardSquareSize))
+                    pygame.draw.rect(self.window_surface, self.board_black, boardLocation)
+
+        ## Draw the peices
+        self.chess_set.pieces[0].blitme(boardSquareSize)
 
         # Draw frame to the screen
         pygame.display.flip()
+
+class ChessPiece:
+    def __init__(self, chessGame):
+        # Initialize attributes to represent a chess piece.
+        self.image = None
+        self.name = ''
+        self.color = ''
+
+        self.window_surface = chessGame.window_surface
+
+        # Start each peice on top left tile
+        self.x, self.y = 1, 0
+
+    def blitme(self, boardSquareSize):
+        # Draw the piece at its current location
+        self.rect = self.image.get_rect()
+        self.rect.topleft = self.x * boardSquareSize, self.y * boardSquareSize
+        self.window_surface.blit(self.image, self.rect)
+
+class ChessPieces:
+    def __init__(self, chessGame, spriteSheetFilename):
+        self.chessGame = chessGame
+        self.pieces = []
+
+        self._load_pieces(spriteSheetFilename)
+
+
+    def _load_pieces(self, spriteSheetFilename):
+        spriteSheet = SpriteSheet(spriteSheetFilename)
+        b_king_rect = (68, 70, 85, 85)
+        b_king_image = spriteSheet.image_at(b_king_rect)
+
+        b_king = ChessPiece(self.chessGame)
+        b_king.image = b_king_image
+        b_king.name = 'king'
+        b_king.color = 'black'
+        self.pieces.append(b_king)
 
 def main():
     chessGame = ChessGame()
