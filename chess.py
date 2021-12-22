@@ -8,6 +8,9 @@ from pygame.locals import *
 screen_width=720
 screen_height=400
 game_name = 'PyGame Chess'
+background_black =  (0, 0, 0)
+board_black = (int("5B", 16), int("27", 16), int("0B", 16))
+board_white = (int("DE", 16), int("B8", 16), int("87", 16))
 
 
 # Main function
@@ -46,16 +49,33 @@ def main():
             if event.type == QUIT:
                 running = False
 
+
+        # Get the shape of the window (width, height)
+        windowShape = pygame.display.get_window_size()
+
         # Set background color
         # Currently fills space with black
-        window_surface.fill((0, 0, 0))
+        window_surface.fill(background_black)
 
-        # Draw a rectangle
-        # Set to color red
-        # Draws a rectangle at (395, 0) with dimensions (10,10)
-        pygame.draw.rect(window_surface, (255, 0, 0), (395,0,10,10))
+        # Get variables for board set up
+        # Square size is how large the board squares are
+        # Offset is used to center the board on the screen
+        boardSquareSize = int(windowShape[1]/8)
+        boardOffset = (int(windowShape[0])-boardSquareSize*8)/2
 
-        # Draw frame to screens
+        # Draw the board
+        for col in range(8):
+            for row in range(8):
+                boardRow = boardSquareSize * row + boardOffset
+                boardCol = boardSquareSize * col
+                # White squares
+                if ((col + row) % 2 == 0):
+                    pygame.draw.rect(window_surface, board_white, (boardRow, boardCol, boardSquareSize, boardSquareSize))
+                # Black squares
+                else:
+                    pygame.draw.rect(window_surface, board_black, (boardRow, boardCol, boardSquareSize, boardSquareSize))
+
+        # Draw frame to the screen
         pygame.display.flip()
 
     # Close out pygame
