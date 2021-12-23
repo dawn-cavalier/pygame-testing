@@ -37,7 +37,7 @@ class ChessGame:
         self.windowSurface = pygame.display.set_mode(size = [self.screen_width, self.screen_height])
 
         # Load pieces
-        self.chessSet = ChessPieces(self, "images/chess_pieces.bmp")
+        self.chessSet = ChessPieces(self, "images\chess_pieces_no_background.png")
 
 
     def run(self):
@@ -64,7 +64,6 @@ class ChessGame:
         ## Set background color
         self.windowSurface.fill(self.background_black)
         
-        ## Draw the board
         # Get variables for board set up
         boardSquareSize = int(windowShape[1]/8)
         if (boardSquareSize*8 > windowShape[0]):
@@ -73,6 +72,7 @@ class ChessGame:
         boardHorizontalOffset = int((windowShape[0]-boardSquareSize*8)/2)
         boardVerticalOffset = int((windowShape[1]-boardSquareSize*8)/2)
 
+        ## Draw the board
         # Drawing the board
         for col in range(8):
             for row in range(8):
@@ -134,8 +134,8 @@ class ChessPieces:
         spriteSheet = SpriteSheet(spriteSheetFilename)
 
         # Load images
-        piece_images = spriteSheet.load_grid_images(2, 6, x_margin=64,
-                x_padding=72, y_margin=68, y_padding=48)
+        piece_images = spriteSheet.load_grid_images(2, 6, x_margin=0,
+                x_padding=0, y_margin=0, y_padding=0)
 
         # Create a Piece for each image.
         colors = ['black', 'white']
