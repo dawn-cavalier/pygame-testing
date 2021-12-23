@@ -13,6 +13,7 @@ class ChessGame:
         self.screen_height=400
         self.game_name = 'PyGame Chess'
         self.background_black =  (0, 0, 0)
+        self.background_white =  (255, 255, 255)
         self.board_black = (int("5B", 16), int("27", 16), int("0B", 16))
         self.board_white = (int("DE", 16), int("B8", 16), int("87", 16))
 
@@ -47,7 +48,6 @@ class ChessGame:
 
     def _check_events(self):
         moving = False
-        counter = 0
         for event in pygame.event.get():
             # Game exits
             if event.type == pygame.QUIT:
@@ -75,7 +75,7 @@ class ChessGame:
         windowShape = pygame.display.get_window_size()
 
         ## Set background color
-        self.windowSurface.fill(self.background_black)
+        self.windowSurface.fill(self.background_white)
         
         # Get variables for board set up
         boardSquareSize = int(windowShape[1]/8)
