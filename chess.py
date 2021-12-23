@@ -102,7 +102,7 @@ class ChessPiece:
         self.window_surface = chessGame.window_surface
 
         # Start each peice on top left tile
-        self.x, self.y = 1, 0
+        self.x, self.y = 0, 0
 
     def blitme(self, boardSquareSize):
         # Draw the piece at its current location
