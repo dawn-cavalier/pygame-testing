@@ -32,6 +32,7 @@ class SpriteSheet:
                 for x in range(image_count)]
         return self.images_at(tups, colorkey)
         
+    # Source: https://ehmatthes.github.io/pcc_2e/beyond_pcc/pygame_sprite_sheets/#a-simple-sprite-sheet
     def load_grid_images(self, num_rows, num_cols, x_margin=0, x_padding=0,
                 y_margin=0, y_padding=0):
             # Load a grid of images.

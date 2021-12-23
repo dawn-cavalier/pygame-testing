@@ -46,6 +46,8 @@ class ChessGame:
             self._update_screen()
 
     def _check_events(self):
+        moving = False
+        counter = 0
         for event in pygame.event.get():
             # Game exits
             if event.type == pygame.QUIT:
@@ -55,6 +57,17 @@ class ChessGame:
                 if event.key == pygame.K_q:
                     pygame.quit()
                     sys.exit()
+
+            
+            elif event.type == MOUSEBUTTONDOWN:
+                for piece in self.chessSet.pieces:
+                    rect = piece.image.get_rect()
+                    if rect.collidepoint(event.pos):
+                        moving = True
+            elif event.type == MOUSEBUTTONUP:
+                    moving = False
+            elif event.type == MOUSEMOTION and moving:
+                rect.move_ip(event.rel)
                 
 
     def _update_screen(self):
