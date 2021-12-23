@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import *
 
+# Source: https://www.pygame.org/wiki/Spritesheet
 class SpriteSheet:
-    # Derived from https://ehmatthes.github.io/pcc_2e/beyond_pcc/pygame_sprite_sheets/#a-simple-sprite-sheet
     def __init__(self, filename):
         try:
             self.sheet = pygame.image.load(filename).convert()
