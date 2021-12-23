@@ -73,7 +73,7 @@ class ChessGame:
         boardHorizontalOffset = int((windowShape[0]-boardSquareSize*8)/2)
         boardVerticalOffset = int((windowShape[1]-boardSquareSize*8)/2)
 
-        # Draw the board
+        # Drawing the board
         for col in range(8):
             for row in range(8):
                 boardRow = boardSquareSize * row + boardHorizontalOffset
@@ -87,8 +87,13 @@ class ChessGame:
                     pygame.draw.rect(self.windowSurface, self.board_black, boardLocation)
 
         ## Draw the peices
-        self.chessSet.pieces[0].blitme(boardSquareSize)
+        # Draw black pieces
+        for piece in self.chessSet.pieces[:6]:
+            piece.blitme(boardSquareSize)
 
+        # Draw white pieces
+        for piece in self.chessSet.pieces[6:]:
+            piece.blitme(boardSquareSize)
         # Draw frame to the screen
         pygame.display.flip()
 
@@ -120,14 +125,63 @@ class ChessPieces:
 
     def _load_pieces(self, spriteSheetFilename):
         spriteSheet = SpriteSheet(spriteSheetFilename)
-        b_king_rect = (68, 70, 85, 85)
-        b_king_image = spriteSheet.image_at(b_king_rect)
 
-        b_king = ChessPiece(self.chessGame)
-        b_king.image = b_king_image
-        b_king.name = 'king'
-        b_king.color = 'black'
-        self.pieces.append(b_king)
+        # Load images
+        piece_images = spriteSheet.load_grid_images(2, 6, x_margin=64,
+                x_padding=72, y_margin=68, y_padding=48)
+
+        # Create a Piece for each image.
+        colors = ['black', 'white']
+        names = ['king', 'queen', 'rook', 'bishop', 'knight', 'pawn']
+
+        pieceNum = 0
+        for color in colors:
+            for name in names:
+
+                if name != 'pawn':
+                    if color == 'black':
+                        board_y = 0
+                    else:
+                        board_y = 7
+                else:
+                    if color == 'black':
+                        board_y = 1
+                    else:
+                        board_y = 6
+
+
+                match name:
+                    case 'king':
+                        self.pieces.append(self._create_piece(name, color, piece_images[pieceNum], 4, board_y))
+                    case 'queen':
+                        self.pieces.append(self._create_piece(name, color, piece_images[pieceNum], 3, board_y))
+                    case 'rook':
+                        for i in range(2):
+                            self.pieces.append(self._create_piece(name, color, piece_images[pieceNum], 7*i, board_y))
+                    case 'bishop':
+                        for i in range(2):
+                            self.pieces.append(self._create_piece(name, color, piece_images[pieceNum], 3*i+2, board_y))
+                    case 'knight':
+                        for i in range(2):
+                            self.pieces.append(self._create_piece(name, color, piece_images[pieceNum], 5*i+1, board_y))
+                    case 'pawn':
+                        for i in range(8):
+                            self.pieces.append(self._create_piece(name, color, piece_images[pieceNum], i, board_y))
+
+                pieceNum += 1
+
+    def _create_piece(self, name, color, image, x, y):
+        piece = ChessPiece(self.chessGame)
+        piece.name = name
+        piece.color = color
+        piece.image = image
+        
+        piece.x = x
+        piece.y = y
+        
+        return piece
+                            
+        
 
 def main():
     chessGame = ChessGame()
