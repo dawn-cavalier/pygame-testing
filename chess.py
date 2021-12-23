@@ -89,11 +89,11 @@ class ChessGame:
         ## Draw the peices
         # Draw black pieces
         for piece in self.chessSet.pieces[:6]:
-            piece.blitme(boardSquareSize)
+            piece.blitme(boardSquareSize, boardHorizontalOffset, boardVerticalOffset)
 
         # Draw white pieces
         for piece in self.chessSet.pieces[6:]:
-            piece.blitme(boardSquareSize)
+            piece.blitme(boardSquareSize, boardHorizontalOffset, boardVerticalOffset)
         # Draw frame to the screen
         pygame.display.flip()
 
@@ -109,11 +109,18 @@ class ChessPiece:
         # Start each peice on top left tile
         self.x, self.y = 0, 0
 
-    def blitme(self, boardSquareSize):
+    def blitme(self, boardSquareSize = (0,0), boardHorizontalOffset = 0, boardVerticalOffset = 0):
+        # Get size
+        rect = self.image.get_rect()
+
+        # If size does not match the square size, resize
+        if boardSquareSize != (0,0) and rect.size != (boardSquareSize, boardSquareSize):
+            self.image = pygame.transform.scale(self.image, (boardSquareSize, boardSquareSize))
+            rect = self.image.get_rect()
+        
         # Draw the piece at its current location
-        self.rect = self.image.get_rect()
-        self.rect.topleft = self.x * boardSquareSize, self.y * boardSquareSize
-        self.windowSurface.blit(self.image, self.rect)
+        rect.topleft = self.x * boardSquareSize + boardHorizontalOffset, self.y * boardSquareSize + boardVerticalOffset
+        self.windowSurface.blit(self.image, rect)
 
 class ChessPieces:
     def __init__(self, chessGame, spriteSheetFilename):
