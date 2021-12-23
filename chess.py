@@ -34,10 +34,10 @@ class ChessGame:
         # This needs to be done before any events can be handle
         # size is window size
         # depth is color depth, auto set to best settings. Leave it ignored
-        self.window_surface = pygame.display.set_mode(size = [self.screen_width, self.screen_height])
+        self.windowSurface = pygame.display.set_mode(size = [self.screen_width, self.screen_height])
 
         # Load pieces
-        self.chess_set = ChessPieces(self, "images/chess_pieces.bmp")
+        self.chessSet = ChessPieces(self, "images/chess_pieces.bmp")
 
 
     def run(self):
@@ -62,7 +62,7 @@ class ChessGame:
         windowShape = pygame.display.get_window_size()
 
         ## Set background color
-        self.window_surface.fill(self.background_black)
+        self.windowSurface.fill(self.background_black)
         
         ## Draw the board
         # Get variables for board set up
@@ -81,13 +81,13 @@ class ChessGame:
                 boardLocation = pygame.Rect(boardRow, boardCol, boardSquareSize, boardSquareSize)
                 # White squares
                 if ((col + row) % 2 == 0):
-                    pygame.draw.rect(self.window_surface, self.board_white, boardLocation)
+                    pygame.draw.rect(self.windowSurface, self.board_white, boardLocation)
                 # Black squares
                 else:
-                    pygame.draw.rect(self.window_surface, self.board_black, boardLocation)
+                    pygame.draw.rect(self.windowSurface, self.board_black, boardLocation)
 
         ## Draw the peices
-        self.chess_set.pieces[0].blitme(boardSquareSize)
+        self.chessSet.pieces[0].blitme(boardSquareSize)
 
         # Draw frame to the screen
         pygame.display.flip()
@@ -99,7 +99,7 @@ class ChessPiece:
         self.name = ''
         self.color = ''
 
-        self.window_surface = chessGame.window_surface
+        self.windowSurface = chessGame.windowSurface
 
         # Start each peice on top left tile
         self.x, self.y = 0, 0
@@ -108,7 +108,7 @@ class ChessPiece:
         # Draw the piece at its current location
         self.rect = self.image.get_rect()
         self.rect.topleft = self.x * boardSquareSize, self.y * boardSquareSize
-        self.window_surface.blit(self.image, self.rect)
+        self.windowSurface.blit(self.image, self.rect)
 
 class ChessPieces:
     def __init__(self, chessGame, spriteSheetFilename):
