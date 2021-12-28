@@ -20,6 +20,9 @@ class ChessGame:
         # Init pygame, needed for modifications
         pygame.init()
 
+        # Start clock for tick count
+        self.clock = pygame.time.Clock()
+
         # Do a font and sound check
         if not pygame.font: print ('Warning, fonts disabled')
         if not pygame.mixer: print ('Warning, sound disabled')
@@ -40,11 +43,11 @@ class ChessGame:
         # Load pieces
         self.chessSet = ChessPieces(self, "images\chess_pieces_no_background.png")
 
-
     def run(self):
         while(True):
             self._check_events()
             self._update_screen()
+            self.clock.tick(60)
 
     def _check_events(self):
         moving = False
@@ -85,7 +88,7 @@ class ChessGame:
         boardHorizontalOffset = int((windowShape[0]-boardSquareSize*8)/2)
         boardVerticalOffset = int((windowShape[1]-boardSquareSize*8)/2)
 
-        ## Draw the board
+        # Draw the board
         # Drawing the board
         for col in range(8):
             for row in range(8):
@@ -200,8 +203,6 @@ class ChessPieces:
         piece.y = y
         
         return piece
-                            
-        
 
 def main():
     chessGame = ChessGame()

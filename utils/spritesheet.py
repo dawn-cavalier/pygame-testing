@@ -3,7 +3,9 @@ from pygame.locals import *
 
 # Source: https://www.pygame.org/wiki/Spritesheet
 class SpriteSheet:
+
     def __init__(self, filename):
+        self.empty = Color(0,0,0,0)
         try:
             self.sheet = pygame.image.load(filename).convert_alpha()
         except pygame.error as e:
@@ -14,7 +16,8 @@ class SpriteSheet:
         # Load a specific image from a specific rectangle.
         # Loads image from x, y, x+offset, y+offset.
         rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size).convert_alpha()
+        image = pygame.Surface(rect.size, flags=SRCALPHA).convert_alpha()
+        image.fill(self.empty)
         image.blit(self.sheet, (0, 0), rect)
         if colorkey is not None:
             if colorkey == -1:
